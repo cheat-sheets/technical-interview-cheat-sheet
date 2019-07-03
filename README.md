@@ -53,7 +53,7 @@
 
 `T(n) <= a*T(n/b) + O(n^d)`
 
-![Master Method](./assets/master-method.jpg)
+![Master Method](./assets/master-method.png)
 
 **Guiding principles for algorithms analysis**:
 - Worst case analysis (other are average case, best case)
