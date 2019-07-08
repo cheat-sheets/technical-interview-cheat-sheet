@@ -114,6 +114,30 @@ branch.
 - **Pre-order** traversal visits the current node before its child nodes (hence the name "pre-order").
 - **Post-order** traversal visits the current node after its child nodes (hence the name "post-order").
 
+### Greedy Algorithms
+
+**Minimum Spanning Tree** - a tree with minimum sum of edge costs that spans all vertices.
+
+There are 2 greedy algorithms for finding a minimum spanning tree: 
+ 
+- **Prim's algorithms** - pick random vertex, choose edge with smallest weight that comes from tree to outside. 
+Add vertex to tree. Repeat.
+- **Kruskal's algorithm** - pick edge with smallest weight, add it to MST if it doesn't create the cycle. Repeat. 
+Uses Union-find data structure to check if edge adds a cycle.
+
+
+**Union-Find** - array where values are references to parent. find() returns the root of tree, union() merges 2 roots.
+It provides near-constant-time operations (bounded by the inverse Ackermann function) for both operations.
+
+[union_find.py](code/union_find.py)
+
+**Optimal Caching** - when cache is full, replace furthest-in-the-future element, i.e. the one that will be requested 
+latest in the future. 
+Replacing least recently used (LRU) is a good approximation to the most optimal algorithms.
+
+**Scheduling Jobs** - pick the job with highest ratio of w/l, where w is job's weight, l is job's length.
+
+
 #### NP-Completeness
 
 - P is the class of decision problems which can be solved in polynomial time by a deterministic Turing machine.
@@ -128,6 +152,26 @@ A reduction from X to Y is simply an algorithm A which solves X by making use of
 problem Y. This reduction is called a "polynomial time reduction" if all parts of A other than B have a polynomial 
 time complexity. As a trivial example, the problem of finding the smallest element in an array is constant-time 
 reducible to the sorting problem, since you can sort the array and then return the first element of the sorted array.
+
+Examples of NP-complete problems:
+
+- Knapsack problem - fill the knapsack with items sum of weights of which don't exceed the limit, providing maximum 
+sum of values of items. 
+- Subset sum problem - given the integers or natural numbers w1, w2, ... wn, does any subset of them sum to precisely W.
+- Travelling salesman problem - given a list of cities and the distances between each pair of cities, what is the 
+shortest possible route that visits each city and returns to the origin city?
+
+Approaches for solving NP-complete problems:
+- Approximation: Instead of searching for an optimal solution, search for a solution that is at most a factor from an 
+optimal one.
+- Randomization: Use randomness to get a faster average running time, and allow the algorithm to fail with some small 
+probability. Note: The Monte Carlo method is not an example of an efficient algorithm in this specific sense, although 
+evolutionary approaches like Genetic algorithms may be.
+- Restriction: By restricting the structure of the input (e.g., to planar graphs), faster algorithms are usually 
+possible.
+- Parameterization: Often there are fast algorithms if certain parameters of the input are fixed.
+- Heuristic: An algorithm that works "reasonably well" in many cases, but for which there is no proof that it is both 
+always fast and always produces a good result. Metaheuristic approaches are often used.
 
 ## Operating Systems
 
