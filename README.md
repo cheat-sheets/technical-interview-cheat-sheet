@@ -105,8 +105,26 @@ Time complexity is log(n) for inserting an element, and for extracting min/max e
 
 **Binary search tree** - all operations are log(n), better than sorted array for inserting/deleting, but worse for 
 getting i-th order statistic, min/max, rank, successor/predecessor.
+- Find min or max - take `n*log(n)` time. For min, follow left child until there is none. 
+- Find successor or predecessor - take `n*log(n)` time. For predecessor, if there is left node, find max of it;
+if there is no left node, follow the parent until node is right node of the parent. 
+- Insertion and deletion - takes `n*log(n)` time. For insertion just follow search algorithm until you find NULL and 
+insert new element there. For deletion, in case a node has only left or right subtree, put it in place of deleted node;
+in case both left and right are present, find the predecessor of deleted node, put it in place of deleted node, then 
+follow deletion algorithm for predecessor.
+- Select and rank (find n-th order statistic) - takes `n*log(n)` time, requires keeping size of subtree i.e. how
+many nodes are contained in the tree.
 
-**Red-black tree** - makes binary search tree relatively balances.
+
+**Red-black tree** - makes binary search tree relatively balances. 
+- Invariants: root is always black, no consecutive red nodes, root-to-NULL paths all have same number of block nodes. 
+- Invariants are maintained by recoloring nodes and rotations, 
+when nodes are inserted or deleted.
+
+**AVL trees** - makes binary search tree relatively balances. Stores in each node the height of the subtrees rooted 
+at this node. 
+- Invariant: the height of the left subtree and the height of the right subtree differ by no more than one.
+- Invariants are maintained via rotations: if left subtree is heavier: LEFT RIGHT SHAPE -> LEFT LEFT SHAPE -> BALANCED.
 
 Binary tree traversals:
 - **In-Order** Traversal means to "visit" (often, print) the left branch, then the current node, and finally, the right
@@ -160,6 +178,7 @@ sum of values of items.
 - Subset sum problem - given the integers or natural numbers w1, w2, ... wn, does any subset of them sum to precisely W.
 - Travelling salesman problem - given a list of cities and the distances between each pair of cities, what is the 
 shortest possible route that visits each city and returns to the origin city?
+- Graph coloring problem - can be solved using backtracking.
 
 Approaches for solving NP-complete problems:
 - Approximation: Instead of searching for an optimal solution, search for a solution that is at most a factor from an 
@@ -172,6 +191,17 @@ possible.
 - Parameterization: Often there are fast algorithms if certain parameters of the input are fixed.
 - Heuristic: An algorithm that works "reasonably well" in many cases, but for which there is no proof that it is both 
 always fast and always produces a good result. Metaheuristic approaches are often used.
+
+#### Checklist for Solving Algorithm and Data Structures Problems
+
+1. Have at least 2 examples.
+1. State the brute force solution.
+1. Estimate time and space complexities before writing code - worst case, average case.
+1. For optimization 
+    - try different data structures - graph, tree, hashmap, stack, queue.
+    - try different algorithm approaches - divide and conquer, greedy, dynamic programming.
+1. Check corner cases.
+1. No *break* in nested loops - replace with functions.
 
 ## Operating Systems
 
