@@ -194,13 +194,27 @@ always fast and always produces a good result. Metaheuristic approaches are ofte
 
 #### Checklist for Solving Algorithm and Data Structures Problems
 
-1. Have at least 2 examples.
-1. State the brute force solution.
-1. Estimate time and space complexities before writing code - worst case, average case.
+1. Come up with at least 2 examples.
+1. Come up with and state the brute force solution.
+1. Estimate time and space complexities before writing code - worst case, average case; time, space.
 1. For optimization 
     - try different data structures - graph, tree, hashmap, stack, queue.
     - try different algorithm approaches - divide and conquer, greedy, dynamic programming.
+1. Run the code through all examples.
 1. Check corner cases.
+
+#### Python Cheat Sheet
+
+String functions:
+
+- `string.split(s[, sep[, maxsplit]])` - `maxsplit` means the result will have at most `maxsplit+1` elements. 
+- `string.rsplit(s[, sep[, maxsplit]])` - same as split() but `s` will be scanned from the right.
+- `string.find(s, sub[, start[, end]])` - return the lowest index in s where the substring sub is found such that 
+sub is wholly contained in `s[start:end]`.
+- `string.rfind(s, sub[, start[, end]])` - same as find() but `s` will be scanned from the right.
+- `string.replace(s, old, new[, maxreplace])`.
+
+
 1. No *break* in nested loops - replace with functions.
 
 ## Operating Systems
