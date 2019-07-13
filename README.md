@@ -205,14 +205,59 @@ always fast and always produces a good result. Metaheuristic approaches are ofte
 
 #### Python Cheat Sheet
 
-String functions:
+String functions https://docs.python.org/3/library/stdtypes.html#textseq:
 
-- `string.split(s[, sep[, maxsplit]])` - `maxsplit` means the result will have at most `maxsplit+1` elements. 
-- `string.rsplit(s[, sep[, maxsplit]])` - same as split() but `s` will be scanned from the right.
-- `string.find(s, sub[, start[, end]])` - return the lowest index in s where the substring sub is found such that 
-sub is wholly contained in `s[start:end]`.
-- `string.rfind(s, sub[, start[, end]])` - same as find() but `s` will be scanned from the right.
+- `string.split(s[, sep[, maxsplit]])`, `string.rsplit(s[, sep[, maxsplit]])` - `maxsplit` means the result will have 
+at most `maxsplit+1` elements. 
+- `string.find(s, sub[, start[, end]])`, `string.rfind(s, sub[, start[, end]])` - return the lowest index in s where 
+the substring sub is found such that sub is wholly contained in `s[start:end]`.
 - `string.replace(s, old, new[, maxreplace])`.
+- `str.partition(sep)`, `str.rpartition(sep)` - partition the string by separator and return 3-tuple containing the 
+part before the separator, the separator itself, and the part after the separator.
+- `str.isdigit()`
+- `str.isalpha()`
+- `str.isalnum()`
+
+Python Cookbook https://www.amazon.com/Python-Cookbook-Third-David-Beazley/dp/1449340377:
+
+- (1.1) `x, y = (4, 5)` - Unpacking a Sequence into Separate Variables
+
+- (1.2) `first, *middle, last = [1, 2, 3, 4]` - Unpacking Elements from Iterables of Arbitrary Length
+
+- (1.3) `deq = collections.deque(maxlen=5)` - Keeping the Last N Items
+
+- (1.4) `heapq.nlargest(3, [1, 8, 2, 23, 7])` - Finding the Largest or Smallest N Items
+
+- (1.5) `heapq.heapify(); heapq.heappush(); heapq.heappop()` - Implementing a Priority Queue
+
+- (1.6) `collections.defaultdict(list)` - Mapping Keys to Multiple Values in a Dictionary
+
+- (1.7) `collections.OrderedDict()` - Keeping Dictionaries in Order
+
+- (1.8) `zip(dict1.values(), dict1.keys())` - Calculating with Dictionaries
+
+- (1.9) `dict1.keys() & dict2.keys()` - Finding Commonalities in Two Dictionaries
+
+- (1.10) `set()` combined with generator function - Removing Duplicates from a Sequence while Maintaining Order
+
+- (1.11) `slice_name = slice(2,5); list1[slice_name]` - Naming a Slice
+
+- (1.12) `collections.Counter()` - Determining the Most Frequently Occurring Items in a Sequence
+
+- (1.13) `sorted(items, key=itemgetter('fname'))` - Sorting a List of Dictionaries by a Common Key
+
+- (1.14) `sorted(items, key=lambda i: i.field1)` - Sorting Objects Without Native Comparison Support
+
+- (1.15) `itertools.groupby()` - Grouping Records Together Based on a Field
+
+- (1.16) `[item for item in [-1, 2, 3] if n > 0]` - Filtering Sequence Elements
+
+- (1.17) `{ key:value for key,value in dict1.items() if key in set1 }` - Extracting a Subset of a Dictionary
+
+- (1.18) `collections.namedtuple('MyEntity', ['field1', 'field2'])` - Mapping Names to Sequence Elements
+
+- (1.20) `collections.ChainMap` or `dict1.update(dict2)` - Combining Multiple Mappings into a Single Mapping
+
 
 
 1. No *break* in nested loops - replace with functions.
