@@ -4,6 +4,7 @@
 
 - [Behavioral Questions](#behavioral-questions)
 - [Algorithms and Data Structures](#algorithms-and-data-structures)
+- [Combinatorics](#combinatorics)
 - [Operating Systems](#operating-systems)
 - [Scalability and Design](#scalability-and-design)
 - [Object-Oriented Programming](#object-oriented-programming)
@@ -179,6 +180,7 @@ sum of values of items.
 - Travelling salesman problem - given a list of cities and the distances between each pair of cities, what is the 
 shortest possible route that visits each city and returns to the origin city?
 - Graph coloring problem - can be solved using backtracking.
+- Boolean satisfiability problem - determining if there exists an interpretation that satisfies a given Boolean formula.
 
 Approaches for solving NP-complete problems:
 - Approximation: Instead of searching for an optimal solution, search for a solution that is at most a factor from an 
@@ -258,9 +260,22 @@ Python Cookbook https://www.amazon.com/Python-Cookbook-Third-David-Beazley/dp/14
 
 - (1.20) `collections.ChainMap` or `dict1.update(dict2)` - Combining Multiple Mappings into a Single Mapping
 
+Google's Python style guide: https://google.github.io/styleguide/pyguide.html.
 
+## Combinatorics
 
-1. No *break* in nested loops - replace with functions.
+https://www.coursera.org/learn/combinatorics
+
+- Tuples: `n^k` - strings of length k from alphabet of size n, where characters can be repeated.   
+- Permutations: `n!/(n - k)!` - strings of length k from alphabet of size n, where characters can not be repeated.
+- Combinations: `(n choose k)` = `n! / ((n - k)! * k!)` - form teams of size k from n people.
+- Combinations with repetitions: `(k + n - 1) choose (n - 1)` - make a salad out of k units, which can be chosen out of
+n types of ingredients, ingredients of each type are unlimited (we don't have to use all ingredients), order 
+doesn't matter.
+
+Binomial Theorem: `(x + y) ^ n = sum((n choose k) * a^(n-k) * b^k), for all 0 <= k <= n`.
+
+![Interview Preparation Grid](./assets/combinatorics-matrix.png) 
 
 ## Operating Systems
 
