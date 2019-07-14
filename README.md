@@ -266,16 +266,22 @@ Google's Python style guide: https://google.github.io/styleguide/pyguide.html.
 
 https://www.coursera.org/learn/combinatorics
 
-- Tuples: `n^k` - strings of length k from alphabet of size n, where characters can be repeated.   
+- Tuples: `n^k` - strings of length k from alphabet of size n, where characters can be repeated. 
+Distribute n assignments among k people: `k ^ n` (look from a different point of view).  
 - Permutations: `n!/(n - k)!` - strings of length k from alphabet of size n, where characters can not be repeated.
 - Combinations: `(n choose k)` = `n! / ((n - k)! * k!)` - form teams of size k from n people.
-- Combinations with repetitions: `(k + n - 1) choose (n - 1)` - make a salad out of k units, which can be chosen out of
+- Combinations with repetitions: `(k + n - 1) choose (n - 1)` - make a salad consisting of k units, which can be chosen out of
 n types of ingredients, ingredients of each type are unlimited (we don't have to use all ingredients), order 
-doesn't matter.
+doesn't matter. Distribute n candies among k children, every child can receive from 0 to n candies: 
+`(k + n - 1) choose (k - 1)` (look from a different point of view).
 
 Binomial Theorem: `(x + y) ^ n = sum((n choose k) * a^(n-k) * b^k), for all 0 <= k <= n`.
 
 ![Interview Preparation Grid](./assets/combinatorics-matrix.png) 
+
+
+
+
 
 ## Operating Systems
 
