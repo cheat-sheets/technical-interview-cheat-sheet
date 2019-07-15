@@ -277,16 +277,34 @@ doesn't matter. Distribute n candies among k children, every child can receive f
 
 Binomial Theorem: `(x + y) ^ n = sum((n choose k) * a^(n-k) * b^k), for all 0 <= k <= n`.
 
-![Interview Preparation Grid](./assets/combinatorics-matrix.png) 
-
-
-
+![Combinatorics Matrix](./assets/combinatorics-matrix.png) 
 
 
 ## Operating Systems
 
 http://pages.cs.wisc.edu/~remzi/OSTEP/
 
+Tracing system calls on MacOS:
+ 
+For a given pid:
+
+```bash
+sudo dtruss -p <pid>
+```
+
+Start a process with tracing:
+
+```bash
+pip install ethereum-etl
+# trace open file system calls
+sudo dtruss ethereumetl export_all --start 2019-01-01 --end 2019-01-02 -w 1 2>&1 | grep open
+```
+
+List files for process starting with `pname`:
+
+```bash
+lsof -c pname
+```
 
 ## Scalability and Design
 
