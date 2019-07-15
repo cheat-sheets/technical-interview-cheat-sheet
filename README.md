@@ -306,7 +306,8 @@ http://pages.cs.wisc.edu/~remzi/OSTEP/
 
 ## Resources
 
-- Cracking The Coding Interview https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850
-- Operating Systems http://pages.cs.wisc.edu/~remzi/OSTEP/
-- Algorithms Specialization on Coursera https://www.coursera.org/specializations/algorithms
+- Cracking The Coding Interview: https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850
+- Operating Systems: http://pages.cs.wisc.edu/~remzi/OSTEP/
+- Algorithms Specialization on Coursera: https://www.coursera.org/specializations/algorithms
+- Socket Programming in Python: https://realpython.com/python-sockets/
 
