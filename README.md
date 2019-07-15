@@ -307,6 +307,6 @@ http://pages.cs.wisc.edu/~remzi/OSTEP/
 ## Resources
 
 - Cracking The Coding Interview https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850
-- Operation Systems http://pages.cs.wisc.edu/~remzi/OSTEP/
+- Operating Systems http://pages.cs.wisc.edu/~remzi/OSTEP/
 - Algorithms Specialization on Coursera https://www.coursera.org/specializations/algorithms
 
