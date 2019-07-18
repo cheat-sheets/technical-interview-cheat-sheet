@@ -8,7 +8,7 @@
   - [Divide and Conquer](#divide-and-conquer) 
   - [Graphs and Trees](#graphs-and-trees) 
   - [Dynamic Programming](#dynamic-programming) 
-  - [Greedy Algorithms](#greedy algorithms) 
+  - [Greedy Algorithms](#greedy-algorithms) 
   - [NP-Completeness](#np-completeness) 
 - [Combinatorics](#combinatorics)
 - [Operating Systems](#operating-systems)
