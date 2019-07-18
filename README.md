@@ -4,6 +4,12 @@
 
 - [Behavioral Questions](#behavioral-questions)
 - [Algorithms and Data Structures](#algorithms-and-data-structures)
+  - [Big-O](#big-o) 
+  - [Divide and Conquer](#divide-and-conquer) 
+  - [Graphs and Trees](#graphs-and-trees) 
+  - [Dynamic Programming](#dynamic-programming) 
+  - [Greedy Algorithms](#greedy algorithms) 
+  - [NP-Completeness](#np-completeness) 
 - [Combinatorics](#combinatorics)
 - [Operating Systems](#operating-systems)
 - [Scalability and Design](#scalability-and-design)
@@ -100,6 +106,13 @@ Strongly connected components of directed graphs - 2 passes - first on reverted 
 
 [graph_dijkstra.py](code/graph_dijkstra.py)
 
+**Floyd-Warshall algorithms** - finds shortest paths between all pairs of nodes. 
+- Uses dynamic programming - matrix Dk stores shortest paths between nodes i and j, allowing to use only intermediary 
+nodes with index less than k;
+- D0 contains direct paths between nodes i and j. `D(k + 1)\[i,j\] = min(D(k)\[i,j\], D(k)\[i,k\] + D(k)\[k,j\])`.
+- runs in O(n^3), where n is number of nodes.
+
+
 **Heap data structure** - a tree where values in all nodes are larger (smaller for min-heap) that all values in 
 respective subnodes.
 Time complexity is log(n) for inserting an element, and for extracting min/max element.
@@ -133,6 +146,16 @@ branch.
 - **Pre-order** traversal visits the current node before its child nodes (hence the name "pre-order").
 - **Post-order** traversal visits the current node after its child nodes (hence the name "post-order").
 
+### Dynamic Programming
+
+**Sequence Alignment**:
+ 
+- Given 2 strings A and B find the alignment with lowest penalty. 
+- Penalties are given for mismatched characters and for gaps.
+- Fill in the matrix `M(i,j)` where i is prefix length of A, j is prefix length of B, `M(i,j)` is best alignment of prefixes.
+- `M(0,j) = i*gap_penalty`, analogous for `M(i,0)`. 
+`M(i,j) = min(M(i-1,j) + gap_penalty, M(i,j-1) + gap_penalty, M(i-1,j-1) + penalty(i,j))`. 
+
 ### Greedy Algorithms
 
 **Minimum Spanning Tree** - a tree with minimum sum of edge costs that spans all vertices.
@@ -157,7 +180,7 @@ Replacing least recently used (LRU) is a good approximation to the most optimal 
 **Scheduling Jobs** - pick the job with highest ratio of w/l, where w is job's weight, l is job's length.
 
 
-#### NP-Completeness
+### NP-Completeness
 
 - P is the class of decision problems which can be solved in polynomial time by a deterministic Turing machine.
 - NP is the class of decision problems which can be solved in polynomial time by a non-deterministic Turing machine. 
@@ -194,18 +217,18 @@ possible.
 - Heuristic: An algorithm that works "reasonably well" in many cases, but for which there is no proof that it is both 
 always fast and always produces a good result. Metaheuristic approaches are often used.
 
-#### Checklist for Solving Algorithm and Data Structures Problems
+### Checklist for Solving Algorithm and Data Structures Problems
 
 1. Come up with at least 2 examples.
 1. Come up with and state the brute force solution.
 1. Estimate time and space complexities before writing code - worst case, average case; time, space.
 1. For optimization 
     - try different data structures - graph, tree, hashmap, stack, queue.
-    - try different algorithm approaches - divide and conquer, greedy, dynamic programming.
+    - try different algorithm approaches - recursion, divide and conquer, greedy, dynamic programming.
 1. Run the code through all examples.
 1. Check corner cases.
 
-#### Python Cheat Sheet
+## Python Cheat Sheet
 
 String functions https://docs.python.org/3/library/stdtypes.html#textseq:
 
