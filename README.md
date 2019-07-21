@@ -202,8 +202,11 @@ sum of values of items.
 - Subset sum problem - given the integers or natural numbers w1, w2, ... wn, does any subset of them sum to precisely W.
 - Travelling salesman problem - given a list of cities and the distances between each pair of cities, what is the 
 shortest possible route that visits each city and returns to the origin city?
-- Graph coloring problem - can be solved using backtracking.
-- Boolean satisfiability problem - determining if there exists an interpretation that satisfies a given Boolean formula.
+- Graph coloring problem - can be solved using backtracking. In social networks, creating groups of people none of whom
+are friends - mixer party.
+- Boolean satisfiability problem (SAT) - determining if there exists an interpretation that satisfies a given Boolean formula.
+
+To show that some problem A is NP-complete, try reducing some other NP-complete problem to A.
 
 Approaches for solving NP-complete problems:
 - Approximation: Instead of searching for an optimal solution, search for a solution that is at most a factor from an 
