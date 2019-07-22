@@ -68,7 +68,7 @@ Therefore X insertions take O(X) time. The amortized time for each insertion is 
  
 Usually recursive  - ex. **Merge Sort**.
 
-**Master Method** (allows to estimate time complexity of a recursive the algorithm):
+**Master Method** (allows to estimate time complexity of a recursive algorithm):
 
 `T(n) <= a*T(n/b) + O(n^d)`
 
@@ -81,7 +81,7 @@ only to 1 subarray, and thus O(n) time (master method case 2).
 
 **Guiding principles for algorithms analysis**:
 
-- Worst case analysis (other are average case, best case)
+- Worst case analysis (others are average case, best case)
 - Drop constant factors, lower-order terms
 - Asymptotic analysis (focus on running time for large input)
 
@@ -119,23 +119,23 @@ Time complexity is log(n) for inserting an element, and for extracting min/max e
 
 **Binary search tree** - all operations are log(n), better than sorted array for inserting/deleting, but worse for 
 getting i-th order statistic, min/max, rank, successor/predecessor.
-- Find min or max - take `n*log(n)` time. For min, follow left child until there is none. 
-- Find successor or predecessor - take `n*log(n)` time. For predecessor, if there is left node, find max of it;
+- Find min or max - take `log(n)` time. For min, follow left child until there is none. 
+- Find successor or predecessor - take `log(n)` time. For predecessor, if there is left node, find max of it;
 if there is no left node, follow the parent until node is right node of the parent. 
-- Insertion and deletion - takes `n*log(n)` time. For insertion just follow search algorithm until you find NULL and 
+- Insertion and deletion - takes `log(n)` time. For insertion just follow search algorithm until you find NULL and 
 insert new element there. For deletion, in case a node has only left or right subtree, put it in place of deleted node;
 in case both left and right are present, find the predecessor of deleted node, put it in place of deleted node, then 
 follow deletion algorithm for predecessor.
-- Select and rank (find n-th order statistic) - takes `n*log(n)` time, requires keeping size of subtree i.e. how
+- Select and rank (find n-th order statistic) - takes `log(n)` time, requires keeping size of subtree i.e. how
 many nodes are contained in the tree.
 
 
-**Red-black tree** - makes binary search tree relatively balances. 
+**Red-black tree** - makes binary search tree relatively balanced. 
 - Invariants: root is always black, no consecutive red nodes, root-to-NULL paths all have same number of block nodes. 
 - Invariants are maintained by recoloring nodes and rotations, 
 when nodes are inserted or deleted.
 
-**AVL trees** - makes binary search tree relatively balances. Stores in each node the height of the subtrees rooted 
+**AVL trees** - makes binary search tree relatively balanced. Stores in each node the height of the subtrees rooted 
 at this node. 
 - Invariant: the height of the left subtree and the height of the right subtree differ by no more than one.
 - Invariants are maintained via rotations: if left subtree is heavier: LEFT RIGHT SHAPE -> LEFT LEFT SHAPE -> BALANCED.
@@ -145,6 +145,10 @@ Binary tree traversals:
 branch.
 - **Pre-order** traversal visits the current node before its child nodes (hence the name "pre-order").
 - **Post-order** traversal visits the current node after its child nodes (hence the name "post-order").
+
+[trie.py](code/trie.py)
+
+[radix_sort.py](code/radix_sort.py)
 
 ### Dynamic Programming
 
