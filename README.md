@@ -377,6 +377,31 @@ namely the **timer interrupt**. This approach is a non-cooperative approach to C
 - Sometimes the OS, during a timer interrupt or system call, might wish to switch from running the current process 
 to a different one, a low-level technique known as a **context switch**.
 
+
+Each process has a **kernel stack** (or more generally, each thread has its own stack) - 
+https://www.cs.umb.edu/~eoneil/cs444_f06/class10.html
+
+Just like there has to be a separate place for each process to hold its set of saved registers 
+(in its process table entry), each process also needs its own kernel stack, to work as its execution stack when it is 
+executing in the kernel.
+
+For example, if a process is doing a read syscall, it is executing the kernel code for read, and needs a stack to do 
+this. It could block on user input, and give up the CPU, but that whole execution environment held on the 
+stack (and in the saved CPU state in the process table entry) has to be saved for its later use. Another process 
+could run meanwhile and do its own syscall, and then it needs its own kernel stack, separate from that blocked 
+reader's stack, to support its own kernel execution.
+
+Since threads can also do system calls, each needs a kernel stack as well.
+
+In Linux, the process/thread table entry and kernel stack are bundled up in one block of memory for each thread. 
+Other OS's organize the memory differently, but still have both of these for each process/thread.
+
+Sometimes the kernel stack is completely empty, notably when the process is executing user code.  
+Then when it does a system call, the kernel stack starts growing, and later shrinking back to nothing at the 
+system call return.
+
+ 
+
 **CPU Scheduling**:
 
 Shortest Job First (SJF) - run shorter jobs before longer ones. Good for **turnaround time** (time since arrival to completion),
@@ -447,6 +472,69 @@ approach.
 
 The **first fit** method simply finds the first block that is big enough and returns the requested amount to the user.
 
+**Paging**
+
+Physical memory is divided into physical frames: fixed-size chunks of memory. OS with the help of hardware maintains
+a **page translation table** in memory that maps **virtual page numbers (VPN)** to **physical frame numbers (PFN)**.
+
+![Address Translation](./assets/os-memory-address-translation.png)
+
+![Virtual to Physical Address](./assets/os-memory-address-space.png) 
+
+Paging has many advantages over previous approaches (such as segmentation). First, it does not lead to external
+fragmentation, as paging (by design) divides memory into fixed-sized units. Second, it is quite flexible, enabling the 
+sparse use of virtual address spaces.
+
+**Translation Look-aside Buffers (TLBs)**
+
+Hardware provides a small, dedicated on-chip TLB as an **address-translation cache**, most memory references will 
+hopefully be handled without having to access the page table in main memory. Thus, in the common case, the performance 
+of the program will be almost as if memory isn't being virtualized at all, an excellent achievement for an operating 
+system, and certainly essential to the use of paging in modern systems.
+
+If the number of pages a program accesses in a short period of time exceeds the number of pages that fit into the TLB, 
+the program will generate a large number of TLB misses, and thus run quite a bit more slowly. We refer to this 
+phenomenon as **exceeding the TLB coverage**, and it can be quite a problem for certain programs. Some OSes support
+larger page sizes which increases effective coverage of the TLB. It's often utilized by DBMS.
+
+Entry in TLB:
+
+VPN | PFN | valid bit | protection bits | ASID (address space identifier, similar to PID but fewer bits) |
+----|-----|-----------|-----------------|----------------------------------------------------------------|
+10  |  100| 1         | rwx             | 1                                                              |
+
+**Page Table Optimizations**
+
+![Multi-layer Page Table](./assets/os-memory-multi-level-page-table.png) 
+
+Linear is faster but uses more memory. Multi-level uses less memory but slower. 
+
+The trade-offs multi-level tables present are in time and space — the bigger the table, the faster a TLB miss can be 
+serviced, as well as the converse — and thus the right choice of structure depends strongly on the constraints of 
+the given environment.
+
+**Swapping**
+
+Processes can access more memory than is physically present within a system. To do so requires more complexity in 
+page-table structures, as a present bit (of some kind) must be included to tell us whether the page is present in 
+memory or not. When not, the operating system **page-fault** handler runs to service the page fault, and thus arranges 
+for the transfer of the desired page from disk to memory, perhaps first replacing some pages in memory to make
+room for those soon to be swapped in.
+
+These actions all take place transparently to the process. As far as the process is concerned, it is just accessing 
+its own private, contiguous virtual memory. Behind the scenes, pages are placed in arbitrary (non-contiguous) locations 
+in physical memory, and sometimes they are not even present in memory, requiring a fetch from disk. While we hope 
+that in the common case a memory access is fast, in some cases it will take multiple disk operations to service it; 
+something as simple as performing a single instruction can, in the worst case, take many milliseconds to complete.
+
+To keep a small amount of memory free, most operating systems thus have some kind of **high watermark (HW)** and 
+**low watermark (LW)** to help decide when to start evicting pages from memory. The background thread, sometimes 
+called the **swap daemon** or page daemon, then goes to sleep, happy that it has freed some memory for running
+processes and the OS to use.
+
+**Linux Address Space**
+
+![Linux Address Space](./assets/os-memory-linux-address-space.png) 
 
 
 Tracing system calls on MacOS:
