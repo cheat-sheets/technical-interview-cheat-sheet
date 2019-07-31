@@ -314,6 +314,141 @@ Binomial Theorem: `(x + y) ^ n = sum((n choose k) * a^(n-k) * b^k), for all 0 <=
 
 http://pages.cs.wisc.edu/~remzi/OSTEP/
 
+### Virtualization
+
+#### CPU Virtualization (time sharing)
+
+**Basics**:
+
+- The **process** is the major OS abstraction of **a running program**. At any point in time, the process can be described by 
+its state: the contents of memory in its **address space**, the contents of **CPU registers** (including the **program counter** 
+and **stack pointer**, among others), and information about I/O (such as **open files** which can be read or
+written).
+- The process **API** consists of calls programs can make related to processes. Typically, this includes **creation**, 
+**destruction**, and other useful calls.
+- Processes exist in one of many different process **states**, including **ready**, **running**, and **blocked**. 
+Different events (e.g., getting scheduled or descheduled, or waiting for an I/O to complete) transition a process 
+from one of these states to the other.
+- A process list contains information about all processes in the system. Each entry is found in what is sometimes 
+called a **process control block (PCB)**, which is really just a structure that contains information about a 
+specific process.
+    - State (ready, running, blocked)
+    - PC (program counter).
+    - Stack pointer.
+    - Frame pointer.
+    - Register context.
+    - Open files.
+    
+![Process States](./assets/os-process-states.png) 
+
+**Process API**:
+
+- Each process has a a process ID (PID).
+- The **`fork()`** system call is used in UNIX systems to create a new process. The creator is called the parent; 
+the newly created process is called the child. As sometimes occurs in real life, the child process is a nearly 
+identical copy of the parent.
+- The **`wait()`** system call allows a parent to wait for its child to complete execution.
+- The **`exec()`** family of system calls allows a child to break free from its similarity to its parent and execute an 
+entirely new program.
+- A UNIX shell commonly uses `fork()`, `wait()`, and `exec()` to launch user commands; **the separation of fork 
+and exec enables features like input/output redirection, pipes, and other cool features**, all without changing anything 
+about the programs being run.
+- Process control is available in the form of **signals**, which can cause jobs to stop, continue, or even terminate.
+- Which processes can be controlled by a particular person is encapsulated in the notion of a **user**; 
+the operating system allows multiple users onto the system, and ensures users can only control their own processes.
+- A superuser can control all processes (and indeed do many other things); this role should be assumed infrequently 
+and with caution for security reasons.
+
+**Limited Direct Execution**:
+
+- The CPU should support at least two modes of execution: a restricted **user mode** and 
+a privileged (non-restricted) **kernel mode**.
+- Typical user applications run in user mode, and use a system call to **trap** into the kernel to request operating 
+system services.
+- The trap instruction saves register state carefully, changes the hardware status to kernel mode, and jumps into 
+the OS to a pre-specified destination: the **trap table**.
+- When the OS finishes servicing a system call, it returns to the user program via another special **return-from-trap** 
+instruction, which reduces privilege and returns control to the instruction after the trap that jumped into the OS.
+- The trap tables must be set up by the OS at boot time, and make sure that they cannot be readily modified by user 
+programs. All of this is part of the **limited direct execution** protocol which runs programs efficiently but without 
+loss of OS control.
+- Once a program is running, the OS must use hardware mechanisms to ensure the user program does not run forever, 
+namely the **timer interrupt**. This approach is a non-cooperative approach to CPU scheduling.
+- Sometimes the OS, during a timer interrupt or system call, might wish to switch from running the current process 
+to a different one, a low-level technique known as a **context switch**.
+
+**CPU Scheduling**:
+
+Shortest Job First (SJF) - run shorter jobs before longer ones. Good for **turnaround time** (time since arrival to completion),
+bad for **responsiveness**. Preemptive Shortest Job First (PSJF) - same as SJF but jobs that arrive later can preempt 
+already running jobs.
+
+Round Robin - run jobs one by one in a circle. Good for responsiveness, bad for turnaround.
+
+**The Multi-Level Feedback Queue**:
+
+It has multiple levels of queues, and uses feedback to determine the priority of a given job. Balance of responsiveness
+and turnaround.
+
+- Rule 1: If Priority(A) > Priority(B), A runs (B doesn’t).
+- Rule 2: If Priority(A) = Priority(B), A & B run in round-robin fashion using the time slice (quantum length) 
+of the given queue.
+- Rule 3: When a job enters the system, it is placed at the highest priority (the topmost queue).
+- Rule 4: Once a job uses up its time allotment at a given level (regardless of how many times it has given up the CPU), 
+its priority is reduced (i.e., it moves down one queue).
+- Rule 5: After some time period S, move all the jobs in the system to the topmost queue.
+
+#### Memory Virtualization (space sharing)
+
+Every process has an illusion of private memory. The OS builds this abstraction of a private, potentially large
+address space for multiple running processes (all sharing memory) on  top of a single, physical memory.
+
+![Virtual Memory](./assets/os-memory-virtual-space.png) 
+
+- `pointer = malloc(size)` - allocate memory.
+- `free(pointer)` - free memory.
+- `sizeof(pointer)` - size of allocated slot.
+
+They are not system calls, but instead library functions.
+
+System calls:
+
+- `brk`, which is used to change the location of the program's break: the location of the end of the heap. Automatically 
+called by `malloc()` and `free()` if necessary.
+
+**Address Translation**
+
+The hardware provides the **base and bounds** registers; each CPU thus has an additional pair of registers, part of the 
+**memory management unit (MMU)** of the CPU. When a user program is running, the hardware will translate each address, 
+by adding the base value to the virtual address generated by the user program. The hardware must also be able to check 
+whether the address is valid, which is accomplished by using the bounds register and some circuitry within the CPU. 
+
+Base and bounds registers can only be modified in **kernel mode** by the OS during context switches.
+
+**Segmentation** - there is base and bounds registers for each segment of memory: code, heap and stack.
+
+**Free Space Management**
+
+When `malloc()` and `free()` are called, the library updates the data structure called **free list**, where
+free chunks of memory are recorded. Most allocators store a little bit of extra information in a **header** block which 
+is kept in memory, usually **just before the handed-out chunk** of memory.
+
+![Free Space Management](./assets/os-memory-free-space-management.png) 
+
+Strategies for finding free memory:
+
+The **best fit** strategy is quite simple: first, search through the free list and
+find chunks of free memory that are as big or bigger than the requested
+size. Then, return the one that is the smallest in that group of candidates;
+this is the so called best-fit chunk (it could be called smallest fit too).
+
+**Worst fit** tries to thus leave big chunks free instead of lots of small chunks that can arise from a best-fit 
+approach.
+
+The **first fit** method simply finds the first block that is big enough and returns the requested amount to the user.
+
+
+
 Tracing system calls on MacOS:
  
 For a given pid:
@@ -330,7 +465,7 @@ pip install ethereum-etl
 sudo dtruss ethereumetl export_all --start 2019-01-01 --end 2019-01-02 -w 1 2>&1 | grep open
 ```
 
-List files for process starting with `pname`:
+List open files for process starting with `pname`:
 
 ```bash
 lsof -c pname
@@ -343,6 +478,11 @@ lsof -c pname
 - List limitations
 - List Hard problems - what will take most effort
 
+https://www.quora.com/Is-there-any-book-to-prepare-for-System-Design-and-Architecture-interview-questions
+
+You should be familiar with the speed of everything your computer can do, including the relative performance of RAM, disk, SSD and your network.
+
+https://github.com/donnemartin/system-design-primer
 
 ## Object-Oriented Programming
 
