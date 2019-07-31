@@ -536,6 +536,136 @@ processes and the OS to use.
 
 ![Linux Address Space](./assets/os-memory-linux-address-space.png) 
 
+### Concurrency
+
+- A **critical section** is a piece of code that accesses a shared resource,
+usually a variable or data structure.
+- A **race condition** arises if multiple threads of
+execution enter the critical section at roughly the same time; both
+attempt to update the shared data structure, leading to a surprising
+(and perhaps undesirable) outcome.
+- An **indeterminate** program consists of one or more race conditions;
+the output of the program varies from run to run, depending on
+which threads ran when. The outcome is thus not **deterministic**,
+something we usually expect from computer systems.
+- To avoid these problems, threads should use some kind of **mutual
+exclusion** primitives; doing so guarantees that only a single thread
+ever enters a critical section, thus avoiding races, and resulting in
+deterministic program outputs.
+
+![Multi-Threaded Address Space](./assets/os-concurrency-multi-threaded-address-space.png) 
+
+**Locks**
+
+Hardware provides primitives for implementing locks by OS:
+- `old = testAndSet(var, old, new)` - updates the variable and returns the old value atomically.
+- `compareAndSwap()`
+- `fetchAndAdd()`
+
+They can be used to implement a simple spin-lock - the one that continuously tests the lock. A better implementation is
+to use a queue with waiting thread IDs. A guard is used a a spin lock, then the lock is acquired if it's available,
+otherwise thread is *parked* to the queue, when unlocking another thread is *unparked* from the queue.
+
+**Condition Variables**
+
+To wait for a condition to become true, a thread can make use of what is known as a **condition variable**. 
+A condition variable is an explicit queue that threads can put themselves on when some state of execution 
+(i.e., some condition) is not as desired (by **waiting** on the condition); some other thread, when it changes said 
+state, can then wake one (or more) of those waiting threads and thus allow them to continue 
+(by **signaling** on the condition).
+
+Condition Variables can be used to solve Producer/Consumer problem. Producer sends a signal when adding item to queue,
+consumer sends signal when item removed from queue.
+
+**Semaphores**
+
+```
+int sem_wait(sem_t *s) {
+  decrement the value of semaphore s by one
+  wait if value of semaphore s is negative
+}  
+
+int sem_post(sem_t *s) {
+  increment the value of semaphore s by one
+  if there are one or more threads waiting, wake one
+}  
+```
+
+- A semaphore initialized with value 1 behaves like a **lock**.
+- A semaphore initialized with value 0 behaves like a **condition variable**.
+
+Semaphores can be used to solve thread throttling problem: https://github.com/blockchain-etl/blockchain-etl-common/blob/master/blockchainetl_common/executors/bounded_executor.py
+
+**Event-Based Concurrency**
+
+Pseudocode for an event loop:
+
+```
+while (1) {
+    events = getEvents();
+    for (e in events)
+    processEvent(e);
+}
+```  
+
+OS provides system calls `select()` or `poll()` to get the list of ready I/O descriptors:
+
+```
+int select(int nfds,
+    fd_set *restrict readfds,
+    fd_set *restrict writefds,
+    fd_set *restrict errorfds,
+    struct timeval *restrict timeout);
+```
+
+`select()` examines the I/O descriptor sets whose addresses are passed in readfds, writefds, and errorfds to see if some 
+of their descriptors are ready for reading, are ready for writing, or have an exceptional condition pending, 
+respectively. The first nfds descriptors are checked in each set, i.e., the descriptors from 0 through nfds-1 in 
+the descriptor sets are examined. On return, select() replaces the given descriptor sets with subsets consisting of 
+those descriptors that are ready for the requested operation. `select()` returns the total number of ready descriptors 
+in all the sets.
+
+`select()` must be used in combination with asynchronous I/O system calls. An example system call for async read:
+
+`int aio_read(struct aiocb *aiocbp);`
+
+### Persistence
+
+inode - a data structure in a file system that describes a file-system object, e.g. a file or a directory. 
+
+Below is an example of information stored in an inode:
+
+```
+struct stat {
+    dev_t st_dev; // ID of device containing file
+    ino_t st_ino; // inode number
+    mode_t st_mode; // protection
+    nlink_t st_nlink; // number of hard links
+    uid_t st_uid; // user ID of owner
+    gid_t st_gid; // group ID of owner
+    dev_t st_rdev; // device ID (if special file)
+    off_t st_size; // total size, in bytes
+    blksize_t st_blksize; // blocksize for filesystem I/O
+    blkcnt_t st_blocks; // number of blocks allocated
+    time_t st_atime; // time of last access
+    time_t st_mtime; // time of last modification
+    time_t st_ctime; // time of last status change
+};  
+``` 
+
+`ln file file2` - creates a hard link by incrementing hard link counter in the inode.
+
+`ln -s file file2` - creates a soft link by creating another inode with type soft link.
+
+![Open File Table](./assets/os-persistence-open-file-table.png) 
+
+![Inode Table](./assets/os-persistence-inode-table.png) 
+
+Read timeline for `/foo/bar`
+
+![File Read Timeline](./assets/os-persistence-read-timeline.png) 
+
+### Tracing System Calls
 
 Tracing system calls on MacOS:
  
