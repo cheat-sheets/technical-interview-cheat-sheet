@@ -45,6 +45,10 @@
 - Outside of Work
 - Wrap Up
 
+#### What Questions to Ask?
+
+TODO
+
 
 ## Algorithms and Data Structures
 
@@ -704,9 +708,120 @@ lsof -c pname
 
 https://www.quora.com/Is-there-any-book-to-prepare-for-System-Design-and-Architecture-interview-questions
 
-You should be familiar with the speed of everything your computer can do, including the relative performance of RAM, disk, SSD and your network.
+You should be familiar with the speed of everything your computer can do, including the relative performance of RAM, 
+disk, SSD and your network.
 
 https://github.com/donnemartin/system-design-primer
+
+### DNS
+
+A **root name server** is a name server for the **root zone** of the DNS. 
+
+OS, or DNS server, or resolver typically includes a file with IPs of 13 root servers hardcoded into it:
+
+HOSTNAME | IP ADDRESSES | MANAGER
+---------|--------------|----------
+a.root-servers.net | 198.41.0.4, 2001:503:ba3e::2:30 | VeriSign, Inc.
+[b.root-servers.net](https://b.root-servers.org/) | 199.9.14.201, 2001:500:200::b | University of Southern California (ISI)
+c.root-servers.net | 192.33.4.12, 2001:500:2::c | Cogent Communications
+d.root-servers.net | 199.7.91.13, 2001:500:2d::d | University of Maryland
+e.root-servers.net | 192.203.230.10, 2001:500:a8::e | NASA (Ames Research Center)
+f.root-servers.net | 192.5.5.241, 2001:500:2f::f | Internet Systems Consortium, Inc.
+g.root-servers.net | 192.112.36.4, 2001:500:12::d0d | US Department of Defense (NIC)
+h.root-servers.net | 198.97.190.53, 2001:500:1::53 | US Army (Research Lab)
+i.root-servers.net | 192.36.148.17, 2001:7fe::53 | Netnod
+j.root-servers.net | 192.58.128.30, 2001:503:c27::2:30 | VeriSign, Inc.
+k.root-servers.net | 193.0.14.129, 2001:7fd::1 | RIPE NCC
+l.root-servers.net | 199.7.83.42, 2001:500:9f::42 | ICANN
+m.root-servers.net | 202.12.27.33, 2001:dc3::35 | WIDE Project
+
+The use of **anycast** (1 IP address corresponds to multiple machines) addressing permits the actual number of root server instances to be much larger, and is 
+997 as of 11 July 2019.
+
+Since 2016, the root zone has been overseen by the Internet Corporation for Assigned Names and Numbers (**ICANN**) 
+which delegate the management to a subsidiary acting as the Internet Assigned Numbers Authority (**IANA**).
+ Distribution services are provided by **Verisign**.
+ 
+**Round-robin DNS** - DNS server responds with list of IP addresses, which is ordered differently for every request.
+It allows to do load balancing of requests, e.g. to scale load balancers themselves.   
+ 
+### Misc
+
+- Load Balancing
+- Caching
+- Data Partitioning
+- Indexes
+- Proxies
+- Queues
+- Redundancy and Replication
+- SQL vs NoSQL
+- CAP Theorem
+- Consistent Hashing
+
+Key characteristics of distributed systems:
+
+- Scalability
+- Reliability
+- Availability
+- Efficiency
+- Manageability
+
+Aspects:
+
+- Scalability and Performance
+- Bottlenecks
+- CI/CD/CT
+- Logging and Monitoring
+- Security and Privacy
+
+Numbers everyone Should Know 
+http://static.googleusercontent.com/media/research.google.com/en/us/people/jeff/stanford-295-talk.pdf
+
+Operation | Time
+----|---
+L1 cache reference | 0.5 ns
+Branch mispredict | 5 ns
+L2 cache reference | 7 ns
+Mutex lock/unlock | 100 ns
+Main memory reference | 100 ns 
+Compress 1K bytes with Zippy | 10,000 ns
+Send 2K bytes over 1 Gbps network | 20,000 ns
+Read 1 MB sequentially from memory | 250,000 ns (0.25 ms) 4 GB/s
+Round trip within same datacenter | 500,000 ns
+Disk seek | 10,000,000 ns
+Read 1 MB sequentially from network | 10,000,000 ns (0.01 s) 100 MB/s
+Read 1 MB sequentially from disk | 30,000,000 ns (0.03 s) 33 MB/s
+Send packet CA->Netherlands->CA | 150,000,000 ns (0.15 s)
+
+**Designing Dropbox**
+
+Files are broken down into chunks of 4MB, only update chunks are synchronized between clients.
+
+**Designing Messenger**
+
+For 500M concurrent active users, we need 10K chat servers each holding 50K connections with users. 
+
+**Designing Typeahead Suggestion**
+
+Use Trie with precalculated top 10 hits for every node of the Trie. 
+
+**Designing API rate limiter**
+
+Fixed window is easy just store (startTimestamp, count). Sliding window need to quantize the window into discrete 
+intervals and track counts in each interval, then sum last N intervals on throttle query.  
+
+**Designing Twitter Search**
+
+400mil status updates daily, each status is 300 bytes, 120GB of storage daily, 1800 days in 5 years, 
+~200TB of storage for 5 years, with buffer 250TB, with replication 500TB, 4TB of storage per server, 
+125 servers to hold the data.
+
+Index contains only words and status ids, 500K words in English language, each word 5 characters, 2.5MB to store all words.
+
+730 statuses in 5 years, need 5 bytes for status id, for 2 years 292B statuses, ~1.4TB of data, 
+if each status message is 15 words, ~21TB total memory for index, if server has 100GB of memory, need 210 servers for index.
+
+Partition by status id to avoid hot word searches, aggregator queries all servers and combines the results.
 
 ## Object-Oriented Programming
 
