@@ -760,7 +760,7 @@ It allows to do load balancing of requests, e.g. to scale load balancers themsel
 
 Key characteristics of distributed systems:
 
-- Scalability
+- Scalability is the capability of a system, process or a network to grow and manage increased demand.
 - Reliability
 - Availability
 - Efficiency
@@ -768,8 +768,10 @@ Key characteristics of distributed systems:
 
 Aspects:
 
+- Capacity Estimations (Storage, Memory, Requests/Sec, Bandwidth)
 - Scalability and Performance
 - Bottlenecks
+- Database Schema Design
 - CI/CD/CT
 - Logging and Monitoring
 - Security and Privacy
@@ -787,11 +789,17 @@ Main memory reference | 100 ns
 Compress 1K bytes with Zippy | 10,000 ns
 Send 2K bytes over 1 Gbps network | 20,000 ns
 Read 1 MB sequentially from memory | 250,000 ns (0.25 ms) 4 GB/s
-Round trip within same datacenter | 500,000 ns
+Round trip within same datacenter | 500,000 ns (0.5 millis)
 Disk seek | 10,000,000 ns
 Read 1 MB sequentially from network | 10,000,000 ns (0.01 s) 100 MB/s
 Read 1 MB sequentially from disk | 30,000,000 ns (0.03 s) 33 MB/s
 Send packet CA->Netherlands->CA | 150,000,000 ns (0.15 s)
+
+https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
+
+http://blog.gainlo.co/index.php/category/system-design-interview-questions/
+
+Jeff Dean Building Software System https://www.youtube.com/watch?v=modXC5IWTJI
 
 **Designing Dropbox**
 
@@ -822,6 +830,34 @@ Index contains only words and status ids, 500K words in English language, each w
 if each status message is 15 words, ~21TB total memory for index, if server has 100GB of memory, need 210 servers for index.
 
 Partition by status id to avoid hot word searches, aggregator queries all servers and combines the results.
+
+**Designing Web Crawler**
+
+Start with seed urls, use breadth-first search to crawl pages, have dedup servers for urls and for page content. 
+Crawler has separate queues for domain buckets, to avoid overloading single domain. Bot-traps are avoided by using 
+credit systems. 
+
+**Designing Facebook Newsfeed**
+
+Keep news feeds in memory in cache servers. Use fan-out on write for regular users, fan-out on load for celebrities.
+Partition by user id.
+
+**Designing Yelp**
+
+To efficiently search nearby locations, divide the map into cells of dynamic size so that each cell has not more 
+than 500 objects. Use QuadTree to represent the tiles and nested tiles.
+- Partition by location id hash. Aggregation servers combine data from multiple index servers.
+
+**Designing Uber Backend**
+
+Different from Yelp because locations change frequently. The QuadTree have to be updated periodically, 
+say every 20 seconds. HashTable contains oldLocation and newLocation for every driver. 
+
+**Design Ticketmaster**
+
+Use SQL database with transactions. Use in-memory queues to hold linked list of in-progress reservations so they can
+be expired efficiently. Use in-memory waiting queues for shows on which there are users waiting for expired reservations
+from other users. Partition by show id. 
 
 ## Object-Oriented Programming
 
