@@ -235,7 +235,7 @@ always fast and always produces a good result. Metaheuristic approaches are ofte
 1. Estimate time and space complexities before writing code - worst case, average case; time, space.
 1. For optimization 
     - try different data structures - graph, tree, hashmap, stack, queue.
-    - try different algorithm approaches - recursion, divide and conquer, greedy, dynamic programming.
+    - try different algorithm approaches - recursion, divide and conquer, greedy, dynamic programming, line sweep.
 1. Run the code through all examples.
 1. Check corner cases.
 
