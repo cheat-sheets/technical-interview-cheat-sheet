@@ -749,7 +749,7 @@ It allows to do load balancing of requests, e.g. to scale load balancers themsel
 
 - Load Balancing
 - Caching
-- Data Partitioning
+- Data Partitioning (using Directory Partitioning)
 - Indexes
 - Proxies
 - Queues
@@ -795,15 +795,42 @@ Read 1 MB sequentially from network | 10,000,000 ns (0.01 s) 100 MB/s
 Read 1 MB sequentially from disk | 30,000,000 ns (0.03 s) 33 MB/s
 Send packet CA->Netherlands->CA | 150,000,000 ns (0.15 s)
 
+### Jeff Dean's Design Principles
+
+Jeff Dean Building Software System https://www.youtube.com/watch?v=modXC5IWTJI
+
+**Design for Growth**
+
+![design-for-growth.png](./assets/jeff-dean-design-for-growth.png) 
+
+**Pattern: Single Master, 1000s of Workers**
+
+![single-master-1000s-workers.png](./assets/jeff-dean-single-master-1000s-workers.png)
+
+![single-master-1000s-workers-cont.png](./assets/jeff-dean-single-master-1000s-workers-cont.png) 
+
+**Pattern: Tree Distribution of Requests**
+
+![tree-distribution-of-requests.png](./assets/jeff-dean-tree-distribution-of-requests.png) 
+
+![tree-distribution-of-requests-cont.png](./assets/jeff-dean-tree-distribution-of-requests-cont.png)
+
+**Pattern: Elastic Systems**
+
+![elastic-systems.png](./assets/jeff-dean-elastic-systems.png)
+
+
 https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
 
 http://blog.gainlo.co/index.php/category/system-design-interview-questions/
 
-Jeff Dean Building Software System https://www.youtube.com/watch?v=modXC5IWTJI
-
 **Designing Dropbox**
 
-Files are broken down into chunks of 4MB, only update chunks are synchronized between clients.
+Files are broken down into chunks of 4MB, only updated chunks are synchronized between clients.
+
+In [GFS](https://en.wikipedia.org/wiki/Google_File_System) there is a master (with Shadow masters), which
+keeps metadata, and Chunk servers, which keep the file chunks, replicated 3 times.
+
 
 **Designing Messenger**
 
