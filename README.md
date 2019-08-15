@@ -819,6 +819,19 @@ Jeff Dean Building Software System https://www.youtube.com/watch?v=modXC5IWTJI
 
 ![elastic-systems.png](./assets/jeff-dean-elastic-systems.png)
 
+### The Google Stack
+
+http://malteschwarzkopf.de/research/assets/google-stack.pdf
+
+![the-google-stack.png](./assets/the-google-stack.png)
+
+**BigTable Design**
+
+https://static.googleusercontent.com/media/research.google.com/en//archive/bigtable-osdi06.pdf
+
+![big-table-design-model.png](./assets/big-table-design-model.png)
+
+![big-table-design-table-hierarchy.png](./assets/big-table-design-table-hierarchy.png)
 
 https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
 
