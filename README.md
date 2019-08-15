@@ -91,6 +91,10 @@ only to 1 subarray, and thus O(n) time (master method case 2).
 
 ### Graphs and Trees
 
+Number of edges in undirected graph with n nodes:
+- min: `n - 1`
+- max: `n * (n - 1) / 2`
+
 **Minimum cut** - Karger's basic algorithm iteratively contracts randomly chosen edges until only two nodes remain; 
 those nodes represent a cut in the original graph. By iterating this basic algorithm a sufficient number of times, 
 a minimum cut can be found with high probability.
@@ -98,7 +102,10 @@ a minimum cut can be found with high probability.
 **BFS (Breadth-first search)** - uses queue. Can be used to find shortest path, connected components.
 
 **DFS (Depth-first search)** - uses stack or recursion. Can be used for topological ordering of DAGs. 
-Strongly connected components of directed graphs - 2 passes - first on reverted graph, second on straight graph.
+Strongly connected components of directed graphs - 2 passes - first on reverted graph, second on straight graph
+(Kosaraju's two-pass algorithm). The first pass can be run on the straight graph as well, and then the node ordering
+should be reversed (because topological sort of the reversed graph is the reverse of the topological sort of
+the straight graph). 
 
 [graph_dfs_bfs.py](code/graph_dfs_bfs.py)
 
@@ -110,16 +117,32 @@ Strongly connected components of directed graphs - 2 passes - first on reverted 
 
 [graph_dijkstra.py](code/graph_dijkstra.py)
 
+**Bellman-Ford algorithm** - uses dynamic programming to compute shortest path from s to all other nodes in the graph.
+  - allows negative links.
+  - matrix `D[i,v]` contains shortest paths from s to v with at most i edges. `D[0,s] = 0`, `D[0,v] = inf` 
+  for all other nodes.
+  - `D[i, v] = min{D[i - 1, v], min{D[i - 1, w] + cost(w,v)}[for all w that have edges to v]}`.  
+  - running time omplexity is O(n * m), space complexity is O(n ^ 2).
+  - used in Internet for routing ([BGP protocol](https://en.wikipedia.org/wiki/Border_Gateway_Protocol)), but instead
+  of computing distances to all destinations, it propagates distances to all sources from a given destination. Routers
+  maintain routing tables that store distances to all possible destinations/subnetworks. They push updated routes to 
+  their neighbors periodically. To avoid [routing loops](https://en.wikipedia.org/wiki/Routing_loop_problem) table stores
+  not only shortest distances but entire paths.
+
+
+
 **Floyd-Warshall algorithms** - finds shortest paths between all pairs of nodes. 
 - Uses dynamic programming - matrix Dk stores shortest paths between nodes i and j, allowing to use only intermediary 
 nodes with index less than k;
-- D0 contains direct paths between nodes i and j. `D(k + 1)\[i,j\] = min(D(k)\[i,j\], D(k)\[i,k\] + D(k)\[k,j\])`.
-- runs in O(n^3), where n is number of nodes.
+- D0 contains direct paths between nodes i and j. `D(k + 1)[i,j] = min(D(k)[i,j], D(k)[i,k] + D(k)[k,j])`.
+- runs in O(n ^ 3), where n is number of nodes.
 
 
 **Heap data structure** - a tree where values in all nodes are larger (smaller for min-heap) that all values in 
 respective subnodes.
 Time complexity is log(n) for inserting an element, and for extracting min/max element.
+ - Two heaps can be used to maintain median of sequence of numbers (1 min heap and 1 max heap that should be rebalanced
+ in case they become unbalanced).
 
 **Binary search tree** - all operations are log(n), better than sorted array for inserting/deleting, but worse for 
 getting i-th order statistic, min/max, rank, successor/predecessor.
@@ -300,7 +323,7 @@ Google's Python style guide: https://google.github.io/styleguide/pyguide.html.
 
 https://www.coursera.org/learn/combinatorics
 
-- Tuples: `n^k` - strings of length k from alphabet of size n, where characters can be repeated. 
+- Tuples: `n ^ k` - strings of length k from alphabet of size n, where characters can be repeated. 
 Distribute n assignments among k people: `k ^ n` (look from a different point of view).  
 - Permutations: `n!/(n - k)!` - strings of length k from alphabet of size n, where characters can not be repeated.
 - Combinations: `(n choose k)` = `n! / ((n - k)! * k!)` - form teams of size k from n people.

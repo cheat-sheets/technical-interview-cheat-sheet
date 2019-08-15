@@ -1,16 +1,16 @@
-from collections import defaultdict
-from heapq import *
+import heapq
+import collections
 
 
 def dijkstra(edges, v_from, v_to):
-    adj = defaultdict(list)
+    adj = collections.defaultdict(list)
     for f, t, cost in edges:
         adj[f].append((cost, t))
 
     heap = [(0, v_from, ())]
     min_scores = {}
     while heap:
-        (cost, v1, path) = heappop(heap)
+        (cost, v1, path) = heapq.heappop(heap)
         if v1 in min_scores: continue
         min_scores[v1] = cost
         path = (v1, path)
@@ -18,7 +18,7 @@ def dijkstra(edges, v_from, v_to):
 
         for c, v2 in adj.get(v1, ()):
             if v2 not in min_scores:
-                heappush(heap, (cost + c, v2, path))
+                heapq.heappush(heap, (cost + c, v2, path))
 
     return float("inf")
 

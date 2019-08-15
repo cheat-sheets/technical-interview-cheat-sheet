@@ -1,9 +1,8 @@
 import collections
-from collections import defaultdict
 
 
 def search(edges, f, method='dfs'):
-    adj = defaultdict(list)
+    adj = collections.defaultdict(list)
 
     for from_v, to_v in edges:
         adj[from_v].append(to_v)
@@ -22,16 +21,13 @@ def search(edges, f, method='dfs'):
         else:
             raise ValueError('Unknown method')
 
-        if v in visited:
-            continue
-
         print(v)
-        visited.add(v)
 
         children = adj[v]
 
         for child in children:
             if child not in visited:
+                visited.add(v)
                 deq.append(child)
 
 
