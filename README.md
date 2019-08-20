@@ -183,9 +183,11 @@ branch.
  
 - Given 2 strings A and B find the alignment with lowest penalty. 
 - Penalties are given for mismatched characters and for gaps.
-- Fill in the matrix `M(i,j)` where i is prefix length of A, j is prefix length of B, `M(i,j)` is best alignment of prefixes.
+- Fill in the matrix `M(i,j)` where i is prefix length of A, j is prefix length of B, `M(i,j)` is penalty of best 
+alignment of prefixes.
 - `M(0,j) = i*gap_penalty`, analogous for `M(i,0)`. 
-`M(i,j) = min(M(i-1,j) + gap_penalty, M(i,j-1) + gap_penalty, M(i-1,j-1) + penalty(i,j))`. 
+`M(i,j) = min(M(i-1,j) + gap_penalty, M(i,j-1) + gap_penalty, M(i-1,j-1) + penalty(A[i],B[j]))`. 
+- The best alignment can be reconstructed from the matrix `M`.
 
 ### Greedy Algorithms
 
@@ -727,12 +729,31 @@ lsof -c pname
 - List all assumptions - needed to scope the project
 - Draft high-level solution
 - List limitations
-- List Hard problems - what will take most effort
+- List hard problems - what will take most effort
 
 https://www.quora.com/Is-there-any-book-to-prepare-for-System-Design-and-Architecture-interview-questions
 
 You should be familiar with the speed of everything your computer can do, including the relative performance of RAM, 
 disk, SSD and your network.
+
+Numbers everyone Should Know 
+http://static.googleusercontent.com/media/research.google.com/en/us/people/jeff/stanford-295-talk.pdf
+
+Operation | Time
+----|---
+L1 cache reference | 0.5 ns
+Branch mispredict | 5 ns
+L2 cache reference | 7 ns
+Mutex lock/unlock | 100 ns
+Main memory reference | 100 ns 
+Compress 1K bytes with Zippy | 10,000 ns
+Send 2K bytes over 1 Gbps network | 20,000 ns
+Read 1 MB sequentially from memory | 250,000 ns (0.25 ms) 4 GB/s
+Round trip within same datacenter | 500,000 ns (0.5 millis)
+Disk seek | 10,000,000 ns
+Read 1 MB sequentially from network | 10,000,000 ns (0.01 s) 100 MB/s
+Read 1 MB sequentially from disk | 30,000,000 ns (0.03 s) 33 MB/s
+Send packet CA->Netherlands->CA | 150,000,000 ns (0.15 s)
 
 https://github.com/donnemartin/system-design-primer
 
@@ -780,6 +801,8 @@ It allows to do load balancing of requests, e.g. to scale load balancers themsel
 - SQL vs NoSQL
 - CAP Theorem
 - Consistent Hashing
+- API Gateway (centralized authentication/authorization, logging/monitoring, traffic control (rate limiting), 
+API version control)
 
 Key characteristics of distributed systems:
 
@@ -799,24 +822,14 @@ Aspects:
 - Logging and Monitoring
 - Security and Privacy
 
-Numbers everyone Should Know 
-http://static.googleusercontent.com/media/research.google.com/en/us/people/jeff/stanford-295-talk.pdf
+Database types:
 
-Operation | Time
-----|---
-L1 cache reference | 0.5 ns
-Branch mispredict | 5 ns
-L2 cache reference | 7 ns
-Mutex lock/unlock | 100 ns
-Main memory reference | 100 ns 
-Compress 1K bytes with Zippy | 10,000 ns
-Send 2K bytes over 1 Gbps network | 20,000 ns
-Read 1 MB sequentially from memory | 250,000 ns (0.25 ms) 4 GB/s
-Round trip within same datacenter | 500,000 ns (0.5 millis)
-Disk seek | 10,000,000 ns
-Read 1 MB sequentially from network | 10,000,000 ns (0.01 s) 100 MB/s
-Read 1 MB sequentially from disk | 30,000,000 ns (0.03 s) 33 MB/s
-Send packet CA->Netherlands->CA | 150,000,000 ns (0.15 s)
+- RDBMS (MySQL, Postgres)
+- Wide-column store (Bigtable, Cassandra)
+- Document store (Firestore, DynamoDB, MongoDB)
+- Key-value store (Redis, Memcache)
+- Columnar database (BigQuery, Redshift)
+- Graph database (Neo4j, JanusGraph) 
 
 ### Jeff Dean's Design Principles
 
@@ -859,6 +872,20 @@ https://static.googleusercontent.com/media/research.google.com/en//archive/bigta
 https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
 
 http://blog.gainlo.co/index.php/category/system-design-interview-questions/
+
+**BigQuery Design**
+
+![big-query-design.png](./assets/big-query-design.png)
+
+**Google Docs Design**
+
+https://stackoverflow.com/questions/5772879/how-do-you-write-a-real-time-webbased-collaboration-tool-such-as-google-docs
+
+Google Docs works via [operational transformation](https://en.wikipedia.org/wiki/Operational_transformation):
+
+The basic idea of operational transformation is to transform (or adjust) the parameters of an editing operation 
+according to the effects of previously executed concurrent operations so that the transformed operation can achieve 
+the correct effect and maintain document consistency.
 
 **Designing Dropbox**
 
