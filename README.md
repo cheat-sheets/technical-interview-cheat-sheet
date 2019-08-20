@@ -12,6 +12,10 @@
   - [NP-Completeness](#np-completeness) 
 - [Combinatorics](#combinatorics)
 - [Operating Systems](#operating-systems)
+  - [CPU Virtualization (time sharing)](#cpu-virtualization-time-sharing)
+  - [Memory Virtualization (space sharing)](#memory-virtualization-space-sharing)
+  - [Concurrency](#concurrency)
+  - [Persistence](#persistence)
 - [Scalability and Design](#scalability-and-design)
 - [Object-Oriented Programming](#object-oriented-programming)
 - [Resources](#resources)
@@ -869,10 +873,6 @@ https://static.googleusercontent.com/media/research.google.com/en//archive/bigta
 
 ![big-table-design-table-hierarchy.png](./assets/big-table-design-table-hierarchy.png)
 
-https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
-
-http://blog.gainlo.co/index.php/category/system-design-interview-questions/
-
 **BigQuery Design**
 
 ![big-query-design.png](./assets/big-query-design.png)
@@ -886,6 +886,10 @@ Google Docs works via [operational transformation](https://en.wikipedia.org/wiki
 The basic idea of operational transformation is to transform (or adjust) the parameters of an editing operation 
 according to the effects of previously executed concurrent operations so that the transformed operation can achieve 
 the correct effect and maintain document consistency.
+
+https://coursehunter-club.net/t/educative-io-design-gurus-grokking-the-system-design-interview-part-1/579
+
+http://blog.gainlo.co/index.php/category/system-design-interview-questions/
 
 **Designing Dropbox**
 
