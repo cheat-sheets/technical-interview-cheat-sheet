@@ -138,7 +138,7 @@ nodes with index less than k;
 - runs in O(n ^ 3), where n is number of nodes.
 
 
-Number of edges in undirected graph with n nodes:
+Number of edges in connected undirected graph with n nodes:
 - min: `n - 1`
 - max: `n * (n - 1) / 2`
 

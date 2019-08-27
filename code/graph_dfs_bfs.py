@@ -1,33 +1,36 @@
 import collections
 
 
-def search(edges, f, method='dfs'):
+def search(edges, start_node, method='dfs'):
     adj = collections.defaultdict(list)
 
-    for from_v, to_v in edges:
-        adj[from_v].append(to_v)
+    for f, t in edges:
+        adj[f].append(t)
 
     visited = set()
 
     deq = collections.deque()
 
-    deq.append(f)
+    deq.append(start_node)
+    visited.add(start_node)
 
     while deq:
         if method == 'dfs':
-            v = deq.pop()
+            # stack for depth-first search
+            node = deq.pop()
         elif method == 'bfs':
-            v = deq.popleft()
+            # queue for breadth-first search
+            node = deq.popleft()
         else:
             raise ValueError('Unknown method')
 
-        print(v)
+        print(node)
 
-        children = adj[v]
+        children = adj[node]
 
         for child in children:
             if child not in visited:
-                visited.add(v)
+                visited.add(child)
                 deq.append(child)
 
 

@@ -4,43 +4,35 @@ from collections import defaultdict
 def topological_sort(edges):
     """Plucking off nodes with indegree 0 - also detects cycles"""
     adj = defaultdict(list)
-    all_vertexes = set()
+    all_nodes = set()
     indegrees = {}
 
     for f, t in edges:
         adj[f].append(t)
 
-        all_vertexes.add(f)
-        all_vertexes.add(t)
+        all_nodes.add(f)
+        all_nodes.add(t)
 
         indegrees[f] = indegrees.get(f, 0)
         indegrees[t] = indegrees.get(t, 0) + 1
 
-    q = []
-    for v, indeg in indegrees.items():
-        if indeg == 0:
-            q.append(v)
+    stack = []
+    for node, indegree in indegrees.items():
+        if indegree == 0:
+            stack.append(node)
 
     result = []
-    while q:
-        v = q.pop()
-        result.append(v)
+    while stack:
+        node = stack.pop()
+        result.append(node)
 
-        for v_tos in adj[v]:
-            for v_to in v_tos:
-                indegrees[v_to] -= 1
-                if indegrees[v_to] == 0:
-                    q.append(v_to)
+        for child in adj[node]:
+            indegrees[child] -= 1
+            if indegrees[child] == 0:
+                stack.append(child)
 
-    if len(result) != len(all_vertexes):
+    if len(result) != len(all_nodes):
         return None
-    return result
-
-
-def flatten(list_of_lists):
-    result = []
-    for lst in list_of_lists:
-        result.extend(lst)
     return result
 
 
@@ -48,6 +40,7 @@ edges = [('A', 'B'), ('B', 'D'), ('A', 'C'), ('C', 'D'), ('D', 'E'), ('E', 'F')]
 
 res = topological_sort(edges)
 
+print('Topological sort by plucking off nodes:')
 print(res)
 
 
@@ -55,41 +48,42 @@ def topological_sort_via_dfs(edges):
     """Doesn't detect cycles (can be used only if we know there are no cycles)"""
     # reverse edges
     edges = [(t, f) for f, t in edges]
-    all_vertices = set()
+    all_nodes = set()
 
     adj = defaultdict(list)
     for f, t in edges:
         adj[f].append(t)
-        all_vertices.add(f)
-        all_vertices.add(t)
+        all_nodes.add(f)
+        all_nodes.add(t)
 
-    not_visited = set(all_vertices)
+    not_visited = set(all_nodes)
     visited = set()
 
-    sorted_v = []
+    sorted_nodes = []
 
-    def dfs(v):
-        if v in visited:
+    def dfs(node):
+        if node in visited:
             return
-        visited.add(v)
-        not_visited.remove(v)
-        children = adj.get(v)
+        visited.add(node)
+        not_visited.remove(node)
+        children = adj.get(node)
         if children is not None:
             for child in children:
                 dfs(child)
 
-        sorted_v.append(v)
+        sorted_nodes.append(node)
 
     while not_visited:
-        any_v = not_visited.pop()
-        not_visited.add(any_v)
-        dfs(any_v)
+        any_node = not_visited.pop()
+        not_visited.add(any_node)
+        dfs(any_node)
 
-    return sorted_v
+    return sorted_nodes
 
 
 edges = [('A', 'B'), ('B', 'D'), ('A', 'C'), ('C', 'D'), ('D', 'E'), ('E', 'F')]
 
 res = topological_sort_via_dfs(edges)
 
+print('Topological sort by depth-first search:')
 print(res)
