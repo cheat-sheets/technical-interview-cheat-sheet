@@ -2,23 +2,25 @@ import heapq
 import collections
 
 
-def dijkstra(edges, v_from, v_to):
+def dijkstra(edges, from_node, to_node):
     adj = collections.defaultdict(list)
-    for f, t, cost in edges:
-        adj[f].append((cost, t))
+    for f, t, distance in edges:
+        adj[f].append((distance, t))
 
-    heap = [(0, v_from, ())]
-    min_scores = {}
+    heap = [(0, from_node, ())]
+    min_distances = {}
     while heap:
-        (cost, v1, path) = heapq.heappop(heap)
-        if v1 in min_scores: continue
-        min_scores[v1] = cost
-        path = (v1, path)
-        if v1 == v_to: return cost, path
+        (distance, node, path) = heapq.heappop(heap)
+        if node in min_distances:
+            continue
+        min_distances[node] = distance
+        path = (node, path)
+        if node == to_node:
+            return distance, path
 
-        for c, v2 in adj.get(v1, ()):
-            if v2 not in min_scores:
-                heapq.heappush(heap, (cost + c, v2, path))
+        for cost, dest_node in adj.get(node, ()):
+            if dest_node not in min_distances:
+                heapq.heappush(heap, (distance + cost, dest_node, path))
 
     return float("inf")
 
