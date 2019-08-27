@@ -95,10 +95,6 @@ only to 1 subarray, and thus O(n) time (master method case 2).
 
 ### Graphs and Trees
 
-Number of edges in undirected graph with n nodes:
-- min: `n - 1`
-- max: `n * (n - 1) / 2`
-
 **Minimum cut** - Karger's basic algorithm iteratively contracts randomly chosen edges until only two nodes remain; 
 those nodes represent a cut in the original graph. By iterating this basic algorithm a sufficient number of times, 
 a minimum cut can be found with high probability.
@@ -141,6 +137,20 @@ nodes with index less than k;
 - D0 contains direct paths between nodes i and j. `D(k + 1)[i,j] = min(D(k)[i,j], D(k)[i,k] + D(k)[k,j])`.
 - runs in O(n ^ 3), where n is number of nodes.
 
+
+Number of edges in undirected graph with n nodes:
+- min: `n - 1`
+- max: `n * (n - 1) / 2`
+
+https://classroom.udacity.com/courses/cs215
+
+**Eulerian path** - path that visits every edge once. Might exist if a graph has exactly 2 nodes with odd degree, or
+all node have even degrees (in which case there may be an Eulerian cycle).
+
+**Euler's Formula** - in a connected planar graph: `n - m + r = 2`, where n is the number of nodes, m is the number of 
+edges, r is the number of regions.
+
+The number of edges in a planar graph is O(n), where n is number of nodes.
 
 **Heap data structure** - a tree where values in all nodes are larger (smaller for min-heap) that all values in 
 respective subnodes.
@@ -240,7 +250,8 @@ sum of values of items.
 - Travelling salesman problem - given a list of cities and the distances between each pair of cities, what is the 
 shortest possible route that visits each city and returns to the origin city?
 - Graph coloring problem - can be solved using backtracking. In social networks, creating groups of people none of whom
-are friends - mixer party.
+are friends - mixer party. All planar graphs can be colored with 4 colors, such that no two adjacent nodes have same
+color (4-clor map theorem).
 - Boolean satisfiability problem (SAT) - determining if there exists an interpretation that satisfies a given Boolean formula.
 
 To show that some problem A is NP-complete, try reducing some other NP-complete problem to A.
