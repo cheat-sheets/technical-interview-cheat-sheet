@@ -160,8 +160,8 @@ Time complexity is log(n) for inserting an element, and for extracting min/max e
 
 **Binary search tree** - all operations are log(n), better than sorted array for inserting/deleting, but worse for 
 getting i-th order statistic, min/max, rank, successor/predecessor.
-- Find min or max - take `log(n)` time. For min, follow left child until there is none. 
-- Find successor or predecessor - take `log(n)` time. For predecessor, if there is left node, find max of it;
+- Find min or max - takes `log(n)` time. For min, follow left child until there is none. 
+- Find successor or predecessor - takes `log(n)` time. For predecessor, if there is left node, find max of it;
 if there is no left node, follow the parent until node is right node of the parent. 
 - Insertion and deletion - takes `log(n)` time. For insertion just follow search algorithm until you find NULL and 
 insert new element there. For deletion, in case a node has only left or right subtree, put it in place of deleted node;
@@ -199,7 +199,7 @@ branch.
 - Penalties are given for mismatched characters and for gaps.
 - Fill in the matrix `M(i,j)` where i is prefix length of A, j is prefix length of B, `M(i,j)` is penalty of best 
 alignment of prefixes.
-- `M(0,j) = i*gap_penalty`, analogous for `M(i,0)`. 
+- `M(0,j) = j*gap_penalty`, analogous for `M(i,0)`. 
 `M(i,j) = min(M(i-1,j) + gap_penalty, M(i,j-1) + gap_penalty, M(i-1,j-1) + penalty(A[i],B[j]))`. 
 - The best alignment can be reconstructed from the matrix `M`.
 

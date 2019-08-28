@@ -15,6 +15,5 @@ uf = UnionFind(10)
 
 uf.union(0, 1)
 uf.union(1, 2)
-uf.union(0, 2)
 
 print(uf.find(0) == uf.find(2))
